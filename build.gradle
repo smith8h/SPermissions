@@ -1,0 +1,34 @@
+
+buildscript { 
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    }
+    
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.1'
+    }
+}
+
+plugins {
+    id 'com.android.application' version '7.4.1' apply false
+    id 'com.android.library' version '7.4.1' apply false
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
