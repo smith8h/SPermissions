@@ -3,16 +3,15 @@ plugins {
 }
 
 android {
-    compileSdk 33
-    buildToolsVersion "33.0.0"
+    compileSdk 34
+    buildToolsVersion "34.0.0"
     
     namespace 'smith.lib.tools.perms'
 
     defaultConfig {
         minSdk 21
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        //noinspection EditedTargetSdkVersion
+        targetSdk 34
     }
     
     compileOptions {
@@ -22,5 +21,5 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
 }
