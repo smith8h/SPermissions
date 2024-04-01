@@ -5,15 +5,15 @@ buildscript {
         gradlePluginPortal()
         google()
     }
-    
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.2'
+        classpath libs.gradle
     }
 }
 
 plugins {
-    id('com.android.application') version '8.0.1' apply false
-    id('com.android.library') version '8.0.1' apply false
+    id 'com.android.application' version '8.3.1' apply false
+    id 'com.android.library' version '8.3.1' apply false
 }
 
 allprojects {
@@ -23,6 +23,10 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
+ext {
+    annotationVersion = '1.7.1'
+}
+
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
