@@ -13,6 +13,11 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+buildCache {
+    local {
+        directory = file("$rootDir/build-cache").toPath()
+    }
+}
 
 rootProject.name = 'SPermissions lib'
 include ':app'
