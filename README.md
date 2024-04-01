@@ -12,9 +12,9 @@
     <!-- Stability -->
     <img src="https://img.shields.io/badge/stability-stable-green.svg" alt="stability" />
     <!-- minSDK -->
-    <img src="https://img.shields.io/badge/minSDK-21-f39f37" alt="minsdk" />
+    <img src="https://img.shields.io/badge/minSDK-24-f39f37" alt="minsdk" />
     <!-- stable version -->
-    <img src="https://img.shields.io/badge/stable_version-1.1-blue" alt="stable"/>
+    <img src="https://img.shields.io/badge/stable_version-2.0-blue" alt="stable"/>
     <!-- repo size -->
     <img src="https://img.shields.io/github/repo-size/smith8h/spermissions" alt="size"/>
 </p>
@@ -36,7 +36,7 @@ allprojects {
 > **Step 2.** Add the dependency:
 ```gradle
 dependencies {
-    implementation 'com.github.smith8h:SPermissions:1.1'
+    implementation 'com.github.smith8h:SPermissions:2.0'
 }
 ```
 
@@ -52,11 +52,11 @@ dependencies {
         // do work when granted
     } else {
         // request (default request code is 700)
-        sp.requestPermision(Manifest.permission.ACCESS_FINE_LOCATION);
+        sp.askPermision(Manifest.permission.ACCESS_FINE_LOCATION);
         
         // if want to use custom request code
         int reqCode = 44;
-        sp.requestPermision(Manifest.permission.ACCESS_FINE_LOCATION, reqCode);
+        sp.askPermision(Manifest.permission.ACCESS_FINE_LOCATION, reqCode);
     }
     
     
@@ -71,18 +71,27 @@ dependencies {
         // do work when granted
     } else {
         // request (default request code is 700)
-        sp.requestPermisions(perms);
+        sp.askPermisions(perms);
         
         // if want to use custom request code
         int reqCode = 44;
-        sp.requestPermisions(perms, reqCode);
+        sp.askPermisions(perms, reqCode);
         // or
-        sp.requestPermisions(new String[] {
+        sp.askPermisions(new String[] {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         }, reqCode);
     }
+```
+get access external storage permission for android 10 and below and 11 and up:
+```java
+if (!sp.hasStorageAccess()) sp.askStorageAccess(new SPermissionsCallback() {
+	@Override
+	public void onAskPermissinResult(boolean isGranted, int requestCode) {
+
+	}
+});
 ```
 • get grant result override `onRequestPermissionsResult`
 ```java
