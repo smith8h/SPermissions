@@ -26,6 +26,7 @@ public class SPermissions extends ComponentActivity {
     private final Activity activity;
     private SPermissionsCallback callback;
     private int requestCode = -1;
+    private final ActivityResultLauncher<Intent> storageResultLauncher;
 
     /**
      * The static request code declared by <b>{@code SPermissions}</b> module.
@@ -35,6 +36,12 @@ public class SPermissions extends ComponentActivity {
 
     private SPermissions(@NonNull Activity activity) {
         this.activity = activity;
+        storageResultLauncher = ((ComponentActivity) activity).registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (callback != null) this.callback.onAskPermissionResult(Environment.isExternalStorageManager(),
+                        requestCode == -1 ? REQUEST_CODE : requestCode);
+            }
+        });
     }
 
     /**
@@ -112,7 +119,7 @@ public class SPermissions extends ComponentActivity {
      * and {@link  Manifest.permission#WRITE_EXTERNAL_STORAGE} for android -10 and below, and {@code Scoped Storage Access} for android
      * +11 and above.
      *
-     * @param callback the callback to be called when the permissions are granted or not.
+     * @param callback the onAskPermissionResult to be called when the permissions are granted or not.
      */
     public void askStorageAccess(SPermissionsCallback callback) {
         this.callback = callback;
@@ -125,20 +132,13 @@ public class SPermissions extends ComponentActivity {
      * and {@link  Manifest.permission#WRITE_EXTERNAL_STORAGE} for android -10 and below, and {@code Scoped Storage Access} for android
      * +11 and above.
      *
-     * @param callback the callback to be called when the permissions are granted or not.
+     * @param callback the onAskPermissionResult to be called when the permissions are granted or not.
      * @param requestCode the unique identifier of the request being asked.
      */
     public void askStorageAccess(SPermissionsCallback callback, int requestCode) {
         this.callback = callback;
         askStorage(requestCode);
     }
-
-    private final ActivityResultLauncher<Intent> storageResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), o -> {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (callback != null) this.callback.callback(Environment.isExternalStorageManager(),
-                    requestCode == -1 ? REQUEST_CODE : requestCode);
-        }
-    });
 
     private void askStorage(int requestCode) {
         this.requestCode = requestCode;
@@ -178,11 +178,11 @@ public class SPermissions extends ComponentActivity {
         if (requestCode == SPermissions.REQUEST_CODE || requestCode == this.requestCode) {
             if (grantResults.length > 0) {
                 if (hasPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
-                    if (callback != null) callback.callback(true, requestCode);
+                    if (callback != null) callback.onAskPermissionResult(true, requestCode);
                 }
             }
         } else {
-            if (callback != null) callback.callback(false, -1);
+            if (callback != null) callback.onAskPermissionResult(false, -1);
         }
     }
 }

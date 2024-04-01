@@ -9,5 +9,5 @@ public interface SPermissionsCallback {
      * @param requestCode the request code that has been sent with the ask method to distinguish
      *                    between permissions requests.
      */
-    void callback(boolean isGranted, int requestCode);
+    void onAskPermissionResult(boolean isGranted, int requestCode);
 }
